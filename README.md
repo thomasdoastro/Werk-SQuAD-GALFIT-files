@@ -24,3 +24,9 @@ Once you have satisfied the above requirements, you can follow along with the in
 There are some limitations for this code that are important to keep in mind when using it:
 * The fit.log file must containn only one of each galaxy before using the extract_best_fit_param function. Duplicates will be produced in the resulting table if this warning is not heeded.
 * In cases where you have fitted multiple profiles for a single input file, the extract_best_fit_param function will always get the parameters of the first profile. This first profile is usually (but not always!) the galaxy you want to fit. Be wary of cases where the first profile is not the galaxy you want model parameters from.
+
+---
+
+# Notice
+
+The code used in Functions 6 and 9 within WerkSQuAD_galfit_functions.py is obtained and modified from Grillard's GalfitPyWrap code (https://github.com/Grillard/GalfitPyWrap). The license for Grillard's code is provided under Functions 6 and 9 within WerkSQuAD_galfit_functions.py and shows that this code is free to use, modify, and distribute by people other than Grillard.
