@@ -86,27 +86,91 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
     df_lines_galfit['true_host_num'] = one_true_host
     
     # Adding on the parameters of each line's host galaxy
-    # Parameters included: azimuthal angle, inclination angle
 
+    # Initialize lists to hold full_galaxy_table properties
+    rho = []
+    rho_rvir = []
+    mstar = []
+    logmhalo = []
+    
+    # Initialize lists to hold GALFIT properties
     azangle = []
     inclangle = []
+    good = []
+    struct = []
+    overlap = []
+    big = []
+    hole = []
 
     for index, row in df_lines_galfit.iterrows():
         gal_num_i = row['true_host_num']
 
         if gal_num_i == 'None':
+            # full_galaxy_table properties if there is no host galaxy
+            rho.append('None')
+            rho_rvir.append('None')
+            mstar.append('None')
+            logmhalo.append('None')
+            
+            # GALFIT properties if there is no host galaxy
             azangle.append('None')
             inclangle.append('None')
+            good.append('None')
+            struct.append('None')
+            overlap.append('None')
+            big.append('None')
+            hole.append('None')
 
         else:
+            # full_galaxy_table properties for each host galaxy
+            rho_i = float(df_full_galaxy.iloc[gal_num_i]['rho'])
+            rho_rvir_i = float(df_full_galaxy.iloc[gal_num_i]['rho_rvir'])
+            mstar_i = float(df_full_galaxy.iloc[gal_num_i]['mstars'])
+            logmhalo_i = float(df_full_galaxy.iloc[gal_num_i]['logmhalo'])
+            
+            # GALFIT properties for each host galaxy
             azangle_i = float(df_galfit[df_galfit['gal_num'] == gal_num_i]['azimuthal_angle'])
             inclangle_i = float(df_galfit[df_galfit['gal_num'] == gal_num_i]['inclination_angle'])
+            good_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['is_good_fit']
+            good_i = bool(good_i[good_i.index[0]])
+            struct_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['shows_internal_struct']
+            struct_i = bool(struct_i[struct_i.index[0]])
+            overlap_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['overlaps_w_object']
+            overlap_i = bool(overlap_i[overlap_i.index[0]])
+            big_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['is_big_galaxy']
+            big_i = bool(big_i[big_i.index[0]])
+            hole_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['has_dark_center_res']
+            hole_i = bool(hole_i[hole_i.index[0]])
 
+            # full_galaxy_table properties appended
+            rho.append(rho_i)
+            rho_rvir.append(rho_rvir_i)
+            mstar.append(mstar_i)
+            logmhalo.append(logmhalo_i)
+            
+            # GALFIT properties appended
             azangle.append(azangle_i)
             inclangle.append(inclangle_i)
+            good.append(good_i)
+            struct.append(struct_i)
+            overlap.append(overlap_i)
+            big.append(big_i)
+            hole.append(hole_i)
 
+    # full_galaxy_table property columns added
+    df_lines_galfit['host_rho'] = rho
+    df_lines_galfit['host_rho_rvir'] = rho_rvir
+    df_lines_galfit['host_mstars'] = mstar
+    df_lines_galfit['host_logmhalo'] = logmhalo
+    
+    # GALFIT property columns added
     df_lines_galfit['host_azimuthal_angle'] = azangle
     df_lines_galfit['host_inclination_angle'] = inclangle
+    df_lines_galfit['host_good_fit'] = good
+    df_lines_galfit['host_shows_structure'] = struct
+    df_lines_galfit['host_overlaps'] = overlap
+    df_lines_galfit['host_big'] = big
+    df_lines_galfit['host_hole'] = hole
     
     return df_lines_galfit
     
