@@ -748,7 +748,7 @@ def find_inclination(best_fit_table):
     return best_fit_table
 
 #################### Function 12 ####################
-def apply_flags(best_fit_table, bad_fits_in, internal_struct_in, overlap_in, pixel_thresh,  edited_in, double_model_in):
+def apply_flags(best_fit_table, bad_fits_in, internal_struct_in, overlap_in, pixel_thresh, edited_in, double_model_in):
     
     # Applies "is_good_fit" flag
     good_fit = [True] * len(best_fit_table)
