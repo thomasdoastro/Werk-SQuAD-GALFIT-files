@@ -748,8 +748,8 @@ def find_inclination(best_fit_table):
     return best_fit_table
 
 #################### Function 12 ####################
-# def apply_flags(best_fit_table, bad_fits_in, spiral_struct_in, overlap_obj_in, pixel_thresh, dark_center_res_in)
-def apply_flags(best_fit_table, bad_fits_in, internal_struct_in, pixel_thresh, dark_center_res_in, overlap_in):
+def apply_flags(best_fit_table, bad_fits_in, spiral_struct_in, overlap_obj_in, pixel_thresh,  edited_in, double_model_in):
+#def apply_flags(best_fit_table, bad_fits_in, internal_struct_in, pixel_thresh, dark_center_res_in, overlap_in):
     
     # Applies "is_good_fit" flag
     good_fit = [True] * len(best_fit_table)
@@ -782,15 +782,28 @@ def apply_flags(best_fit_table, bad_fits_in, internal_struct_in, pixel_thresh, d
             large_galaxy[i] = False
             
     # Applies "has_residual_dark_center" flag
-    has_dark_center_res = [False] * len(best_fit_table)
-    for i in dark_center_res_in:
-        has_dark_center_res[i] = True
+    # - REMOVING- it will be assumed that 'double_model' galaxies automatically have dark center in resid.
+    #has_dark_center_res = [False] * len(best_fit_table)
+    #for i in dark_center_res_in:
+    #    has_dark_center_res[i] = True
+    
+    ## Add for edited galaxies/ those varying from the initial parameters
+    edited = [False] * len(best_fit_table)
+    for i in edited_in:
+        edited[i] = True
+        
+     ## Applies "double model" flag for when concentric sersic/ ally method is used
+    double_model = [False] * len(best_fit_table)
+    for i in double_model_in:
+        double_model[i] = True
     
     # Adds flags as columns in best_fit_table DataFrame
     best_fit_table['is_good_fit'] = good_fit
     best_fit_table['shows_internal_struct'] = internal_struct
     best_fit_table['overlaps_w_object'] = has_overlap
     best_fit_table['is_big_galaxy'] = large_galaxy
-    best_fit_table['has_dark_center_res'] = has_dark_center_res
+    best_fit_table['edited'] = edited
+    best_fit_table['double_model'] = double_model
+    # best_fit_table['has_dark_center_res'] = has_dark_center_res
     
     return best_fit_table
