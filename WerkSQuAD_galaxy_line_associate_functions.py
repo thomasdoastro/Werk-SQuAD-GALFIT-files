@@ -96,11 +96,16 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
     # Initialize lists to hold GALFIT properties
     azangle = []
     inclangle = []
+    axis_ratio = []
+    ar_error= []
+    
+    # Initialize lists to hold flags
     good = []
     struct = []
     overlap = []
     big = []
-    hole = []
+    edited = []
+    double = []
 
     for index, row in df_lines_galfit.iterrows():
         gal_num_i = row['true_host_num']
@@ -115,11 +120,16 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
             # GALFIT properties if there is no host galaxy
             azangle.append('None')
             inclangle.append('None')
+            axis_ratio.append('None')
+            ar_error.append('None')
+            
+            # Flags if there is no host galaxy
             good.append('None')
             struct.append('None')
             overlap.append('None')
             big.append('None')
-            hole.append('None')
+            edited.append('None')
+            double.append('None')
 
         else:
             # full_galaxy_table properties for each host galaxy
@@ -131,16 +141,22 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
             # GALFIT properties for each host galaxy
             azangle_i = float(df_galfit[df_galfit['gal_num'] == gal_num_i]['azimuthal_angle'])
             inclangle_i = float(df_galfit[df_galfit['gal_num'] == gal_num_i]['inclination_angle'])
+            axis_ratio_i = float(df_galfit[df_galfit['gal_num'] == gal_num_i]['axis_ratio'])
+            axis_ratio_error_i = float(df_galfit[df_galfit['gal_num'] == gal_num_i]['axis_ratio_error'])
+            
+            # Adding our 6 flags (as of 12/23)
             good_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['is_good_fit']
             good_i = bool(good_i[good_i.index[0]])
-            struct_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['shows_internal_struct']
+            struct_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['shows_spiral_struct']
             struct_i = bool(struct_i[struct_i.index[0]])
             overlap_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['overlaps_w_object']
             overlap_i = bool(overlap_i[overlap_i.index[0]])
             big_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['is_big_galaxy']
             big_i = bool(big_i[big_i.index[0]])
-            hole_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['has_dark_center_res']
-            hole_i = bool(hole_i[hole_i.index[0]])
+            edited_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['edited']
+            edited_i = bool(edited_i[edited_i.index[0]])
+            double_i= df_galfit[df_galfit['gal_num'] == gal_num_i]['double_model']
+            double_i = bool(double_i[double_i.index[0]])
 
             # full_galaxy_table properties appended
             rho.append(rho_i)
@@ -151,11 +167,16 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
             # GALFIT properties appended
             azangle.append(azangle_i)
             inclangle.append(inclangle_i)
+            axis_ratio.append(axis_ratio_i)
+            ar_error.append(axis_ratio_error_i)
+
+            # Flags appended
             good.append(good_i)
             struct.append(struct_i)
             overlap.append(overlap_i)
             big.append(big_i)
-            hole.append(hole_i)
+            edited.append(edited_i)
+            double.append(double_i)
 
     # full_galaxy_table property columns added
     df_lines_galfit['host_rho'] = rho
@@ -166,11 +187,16 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
     # GALFIT property columns added
     df_lines_galfit['host_azimuthal_angle'] = azangle
     df_lines_galfit['host_inclination_angle'] = inclangle
+    df_lines_galfit['host_axis_ratio'] = axis_ratio
+    df_lines_galfit['host_axis_ratio_error'] = ar_error
+    
+    # Flag columns added
     df_lines_galfit['host_good_fit'] = good
     df_lines_galfit['host_shows_structure'] = struct
     df_lines_galfit['host_overlaps'] = overlap
     df_lines_galfit['host_big'] = big
-    df_lines_galfit['host_hole'] = hole
+    df_lines_galfit['host_edited'] = edited
+    df_lines_galfit['host_double_model'] = double
     
     return df_lines_galfit
     
