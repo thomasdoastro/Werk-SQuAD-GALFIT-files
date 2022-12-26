@@ -413,80 +413,80 @@ def extract_best_fit_param(path, df_nearqso, coords):
                 data_i.pop(6)
                 
         # Extracts each parameter and puts it into their respective list
-    
+
         gal_number_i = data_i[1].split('_')[-1].replace('.txt', '')
         gal_number.append(int(gal_number_i))
-    
-        xcoord_i = [x for x in data_i[4].split(' ') if x != ''][3].replace(',', '')
+
+        xcoord_i = [x for x in data_i[4].split(' ') if x != ''][3].replace(',', '').replace('(', '')
         if '*' in xcoord_i:
             xcoord_i = xcoord_i.split('*')[1]
         xcoord.append(float(xcoord_i))
-    
-        xcoord_err_i = [x for x in data_i[5].split('  ') if x != ''][1].replace(',', '')
+
+        xcoord_err_i = [x for x in data_i[5].split(' ') if x != ''][1].replace(',', '')
         if '*' in xcoord_err_i:
             xcoord_err_i = xcoord_err_i.split('*')[1]
         xcoord_err.append(float(xcoord_err_i))
-    
+
         ycoord_i = [x for x in data_i[4].split(' ') if x != ''][4].replace(')', '')
         if '*' in ycoord_i:
             ycoord_i = ycoord_i.split('*')[1]
         ycoord.append(float(ycoord_i))
-    
-        ycoord_err_i = [x for x in data_i[5].split('  ') if x != ''][2].replace(')', '').replace(' ', '')
+
+        ycoord_err_i = [x for x in data_i[5].split(' ') if x != ''][2].replace(')', '')
         if '*' in ycoord_err_i:
             ycoord_err_i = ycoord_err_i.split('*')[1]
         ycoord_err.append(float(ycoord_err_i))
-    
-        int_mag_i = [x for x in data_i[4].split('  ') if x != ''][3].replace(' ', '').replace(')', '')
+
+        int_mag_i = [x for x in data_i[4].split(' ') if x != ''][5]
         if '*' in int_mag_i:
             int_mag_i = int_mag_i.split('*')[1]
         int_mag.append(float(int_mag_i))
-    
-        int_mag_err_i = [x for x in data_i[5].split('  ') if x != ''][3]
+
+        int_mag_err_i = [x for x in data_i[5].split(' ') if x != ''][3]
         if '*' in int_mag_err_i:
             int_mag_err_i = int_mag_err_i.split('*')[1]
         int_mag_err.append(float(int_mag_err_i))
-    
-        half_light_rad_i = [x for x in data_i[4].split('  ') if x != ''][4]
+
+        half_light_rad_i = [x for x in data_i[4].split(' ') if x!=''][6]
         if '*' in half_light_rad_i:
             half_light_rad_i = half_light_rad_i.split('*')[1]
         half_light_rad.append(float(half_light_rad_i))
-    
-        half_light_rad_err_i = [x for x in data_i[5].split('  ') if x != ''][4]
+
+        half_light_rad_err_i = [x for x in data_i[5].split(' ') if x != ''][4]
         if '*' in half_light_rad_err_i:
             half_light_rad_err_i = half_light_rad_err_i.split('*')[1]
         half_light_rad_err.append(float(half_light_rad_err_i))
-    
-        ser_ind_i = [x for x in data_i[4].split('  ') if x != ''][5]
+
+        ser_ind_i = [x for x in data_i[4].split(' ') if x != ''][7]
         if '*' in ser_ind_i:
             ser_ind_i = ser_ind_i.split('*')[1]
         ser_ind.append(float(ser_ind_i))
-    
-        ser_ind_err_i = [x for x in data_i[5].split('  ') if x != ''][5]
+
+        ser_ind_err_i = [x for x in data_i[5].split(' ') if x != ''][5]
         if '*' in ser_ind_err_i:
             ser_ind_err_i = ser_ind_err_i.split('*')[1]
         ser_ind_err.append(float(ser_ind_err_i))
-    
-        ax_ratio_i = [x for x in data_i[4].split('  ') if x != ''][6]
+
+        ax_ratio_i = [x for x in data_i[4].split(' ') if x != ''][8]
         if '*' in ax_ratio_i:
             ax_ratio_i = ax_ratio_i.split('*')[1]
         ax_ratio.append(float(ax_ratio_i))
-    
-        ax_ratio_err_i = [x for x in data_i[5].split('  ') if x != ''][6]
+
+        ax_ratio_err_i = [x for x in data_i[5].split(' ') if x != ''][6]
         if '*' in ax_ratio_err_i:
             ax_ratio_err_i = ax_ratio_err_i.split('*')[1]
         ax_ratio_err.append(float(ax_ratio_err_i))
-    
-        pa_i = [x for x in data_i[4].split('  ') if x != ''][7].replace(' ', '')
+
+        pa_i = [x for x in data_i[4].split(' ') if x != ''][9]
         if '*' in pa_i:
             pa_i = pa_i.split('*')[1]
         pa.append(float(pa_i))
-    
-        pa_err_i = [x for x in data_i[5].split('  ') if x != ''][7].replace(' ', '')
+
+        pa_err_i = [x for x in data_i[5].split(' ') if x != ''][7]
         if '*' in pa_err_i:
             pa_err_i = pa_err_i.split('*')[1]
         pa_err.append(float(pa_err_i))
-    
+
         rchi2_i = data_i[-1].replace(' Chi^2/nu = ', '').replace(' ', '')
         rchi2.append(float(rchi2_i))
         
