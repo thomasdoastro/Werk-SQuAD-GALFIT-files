@@ -199,4 +199,14 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
     df_lines_galfit['host_double_model'] = double
     
     return df_lines_galfit
-    
+
+# Function to apply the data reductions + slices to the galfit_lines data
+# associate the df_lines_galfit data table here (set lines_galfit= df_lines_galfit)
+def reduce_data(lines_galfit):
+    # slice to get rid of galaxies with no host
+    nonull= lines_galfit[lines_galfit['true_host_num'] != 'None']
+    # slicing to only include galaxies with axis ratio less than or = to 0.8
+    axis_ratio_slice= nonull[nonull['host_axis_ratio'] <= 0.8]
+    # slice to only include models that we believe are good
+    final_reduction= axis_ratio_slice[axis_ratio_slice['host_good_fit']== True]
+    return final_reduction
