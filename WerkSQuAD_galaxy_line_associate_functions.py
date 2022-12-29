@@ -88,9 +88,11 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
     # Adding on the parameters of each line's host galaxy
 
     # Initialize lists to hold full_galaxy_table properties
+    redshift = []
     rho = []
     rho_rvir = []
     mstar = []
+    sfr = []
     logmhalo = []
     
     # Initialize lists to hold GALFIT properties
@@ -112,9 +114,11 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
 
         if gal_num_i == 'None':
             # full_galaxy_table properties if there is no host galaxy
+            redshift.append('None')
             rho.append('None')
             rho_rvir.append('None')
             mstar.append('None')
+            sfr.append('None')
             logmhalo.append('None')
             
             # GALFIT properties if there is no host galaxy
@@ -133,9 +137,11 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
 
         else:
             # full_galaxy_table properties for each host galaxy
+            redshift_i = float(df_full_galaxy.iloc[gal_num_i]['z'])
             rho_i = float(df_full_galaxy.iloc[gal_num_i]['rho'])
             rho_rvir_i = float(df_full_galaxy.iloc[gal_num_i]['rho_rvir'])
             mstar_i = float(df_full_galaxy.iloc[gal_num_i]['mstars'])
+            sfr_i = float(df_full_galaxy.iloc[gal_num_i]['SFR'])
             logmhalo_i = float(df_full_galaxy.iloc[gal_num_i]['logmhalo'])
             
             # GALFIT properties for each host galaxy
@@ -147,7 +153,7 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
             # Adding our 6 flags (as of 12/23)
             good_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['is_good_fit']
             good_i = bool(good_i[good_i.index[0]])
-            struct_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['shows_spiral_struct']
+            struct_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['shows_internal_struct']
             struct_i = bool(struct_i[struct_i.index[0]])
             overlap_i = df_galfit[df_galfit['gal_num'] == gal_num_i]['overlaps_w_object']
             overlap_i = bool(overlap_i[overlap_i.index[0]])
@@ -159,9 +165,11 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
             double_i = bool(double_i[double_i.index[0]])
 
             # full_galaxy_table properties appended
+            redshift.append(redshift_i)
             rho.append(rho_i)
             rho_rvir.append(rho_rvir_i)
             mstar.append(mstar_i)
+            sfr.append(sfr_i)
             logmhalo.append(logmhalo_i)
             
             # GALFIT properties appended
@@ -179,9 +187,11 @@ def associate_line_galaxy(galfit_csv_path, full_galaxy_path, line_csv_path, qso_
             double.append(double_i)
 
     # full_galaxy_table property columns added
+    df_lines_galfit['host_redshift'] = redshift
     df_lines_galfit['host_rho'] = rho
     df_lines_galfit['host_rho_rvir'] = rho_rvir
     df_lines_galfit['host_mstars'] = mstar
+    df_lines_galfit['host_sfr'] = sfr
     df_lines_galfit['host_logmhalo'] = logmhalo
     
     # GALFIT property columns added
